@@ -40,3 +40,6 @@ A few of the variables are:
       StartDelayInSeconds - The delay before the log generator start creating log files
       (allows the pipeline some time to initiate)
 
+### Who has helped with this so far?
+
+Flowroute ( https://www.flowroute.com/ )
