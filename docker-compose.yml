@@ -1,0 +1,49 @@
+version: '3.6'
+services:
+  iptableslogdumper:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      LogsPerSecond: 100
+      TotalLogs: 10000
+      MyProgramName: myprog
+      StartDelayInSeconds: 5
+    depends_on:
+      - logstash-pre
+    logging:
+      driver: syslog
+      options: 
+        syslog-address: "tcp://localhost:5514"
+    networks:
+      - log-net
+
+  logstash-pre:
+    image: logstash:5.6.9-alpine
+    volumes:
+      - "./logstashpre-config:/logstash-config"
+    command: ["logstash", "-f", "/logstash-config/logstash.conf"]
+    ports:
+      - "5514:5514"
+    networks:
+      - log-net
+
+  redis:
+    image: redis:4.0.5-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    hostname: redis
+    networks:
+      - log-net
+    volumes:
+      - "./redis-data:/data"
+
+  logstash-post:
+    image: logstash:5.6.9-alpine
+    volumes:
+      - "./logstashpost-config:/logstash-config"
+    command: ["logstash", "-f", "/logstash-config/logstash.conf"]
+    networks:
+      - log-net
+
+networks:
+  log-net:
