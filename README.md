@@ -19,3 +19,24 @@ benchmark those results.
 
 In my example, logstash is also doing some basic geoip lookups, which could be useful
 in shaping firewall decisions.
+
+### How do I use this?
+
+Check the variables set within the `docker-compose.yml` and if they fit your needs then run:
+
+```docker-compose build```
+
+```docker-compose up -d```
+
+and when the run is complete you can tear it all down:
+
+```docker-compose down```
+
+A few of the variables are:
+
+      LogsPerSecond - The number of logs that you want to generate per second
+      TotalLogs - The number of logs you want to generate for this run
+      MyProgramName - If you want to customize the name of the application running
+      StartDelayInSeconds - The delay before the log generator start creating log files
+      (allows the pipeline some time to initiate)
+
